@@ -37,5 +37,8 @@ namespace DiscordRPC.Models
         public string Button1Url { get; set; } = "";
         public string Button2Label { get; set; } = "";
         public string Button2Url { get; set; } = "";
+
+        // Payload Port
+        public string ListeningPort { get; set; } = "";
     }
 }

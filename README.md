@@ -25,6 +25,7 @@ Here is what makes this client different:
 * Complete Field Support
 * Exportable/Importable Config
 * A Real GUI (No Plaintext Editing)
+* UDP Payload Support for Values
 * The App is Just a Couple Hundred Kilobytes
 
 ---
@@ -32,6 +33,38 @@ Here is what makes this client different:
 ## ⚙️ Technical Specification
 
 The client is built on the [.NET 10](https://dotnet.microsoft.com/en-us/download/dotnet/10.0) framework (C#) with WPF and is powered by [DiscordRichPresence](https://www.nuget.org/packages/DiscordRichPresence) by [Lachee](https://www.nuget.org/profiles/Lachee).
+
+<details>
+  <summary>UDP payload schema</summary>
+
+```
+{
+  "ClientId": "1234567890123456",
+  "Details": "Exploring the Dungeon",
+  "State": "In a Party",
+  "UseTimestamps": true,
+  "AsTimeRemaining": true,
+  "TotalDurationMinutes": 45,
+  "LargeImageKey": "logo_large",
+  "LargeImageText": "Main Expansion Logo",
+  "SmallImageKey": "status_online",
+  "SmallImageText": "Level 50 Warrior",
+  "PartyId": "party_12345_abcde",
+  "PartyCurrentSize": 2,
+  "PartyMaxSize": 4,
+  "JoinSecret": "join_secret_token_xyz",
+  "SpectateSecret": "spectate_secret_token_123",
+  "Button1Label": "Visit Website",
+  "Button1Url": "https://example.com",
+  "Button2Label": "Join Discord",
+  "Button2Url": "https://discord.gg/invite"
+}
+```
+
+  (Dynamic port switching is not supported)
+
+</details>
+
 
 <details>
   <summary>For nerds</summary>

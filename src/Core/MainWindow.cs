@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using DiscordRPC.Models;
+using DiscordRPC.Services;
 
 using Brushes = System.Windows.Media.Brushes;
 using CheckBox = System.Windows.Controls.CheckBox;
@@ -22,6 +23,7 @@ namespace DiscordRPC.Core
     {
         private DiscordRpcClient? _rpcClient;
         private RpcProfile _currentProfile = new();
+        private RpcListener? _portListener;
         private string _currentFilePath = "";
         private bool _isDirty = false;
 
@@ -38,6 +40,7 @@ namespace DiscordRPC.Core
         private TextBox txtPartyId = null!, txtPartyCur = null!, txtPartyMax = null!;
         private TextBox txtJoinSecret = null!, txtSpectateSecret = null!;
         private TextBox txtBtn1Label = null!, txtBtn1Url = null!, txtBtn2Label = null!, txtBtn2Url = null!;
+        private TextBox txtListeningPort = null!;
 
         public MainWindow()
         {
@@ -161,6 +164,49 @@ namespace DiscordRPC.Core
         {
             UpdateProfileFromUiValues();
 
+            // Port Overriding Behavior Logic
+            if (int.TryParse(_currentProfile.ListeningPort, out int port) && port > 0)
+            {
+                if (_portListener == null)
+                {
+                    _portListener = new RpcListener(
+                        onProfileReceived: (remoteProfile) =>
+                        {
+                            // Marshall the updates cleanly back onto the WPF dispatch layout thread
+                            Dispatcher.Invoke(() => {
+                                // If incoming values are blank/default, merge and preserve what's currently in the UI box instead
+                                if (string.IsNullOrEmpty(remoteProfile.Details))
+                                    remoteProfile.Details = txtDetails.Text;
+                                if (string.IsNullOrEmpty(remoteProfile.State))
+                                    remoteProfile.State = txtState.Text;
+                                if (string.IsNullOrEmpty(remoteProfile.LargeImageKey))
+                                    remoteProfile.LargeImageKey = txtLargeKey.Text;
+                                if (string.IsNullOrEmpty(remoteProfile.SmallImageKey))
+                                    remoteProfile.SmallImageKey = txtSmallKey.Text;
+
+                                // Commit the merged data model
+                                _currentProfile = remoteProfile;
+                                ApplyPresenceToDiscord();
+                            });
+                        },
+                        onStatusReported: (msg, isError) =>
+                        {
+                            Dispatcher.Invoke(() => SetStatus(msg, isError ? Color.FromRgb(180, 50, 50) : Color.FromRgb(30, 90, 150)));
+                        }
+                    );
+                }
+
+                _portListener.Start(port);
+                return;
+            }
+
+            // Normal behavior if port text box is blank
+            _portListener?.Stop();
+            ApplyPresenceToDiscord();
+        }
+
+        private void ApplyPresenceToDiscord()
+        {
             if (string.IsNullOrWhiteSpace(_currentProfile.ClientId))
             {
                 SetStatus("Error: Client ID cannot be empty!", Color.FromRgb(150, 40, 40));
@@ -169,7 +215,6 @@ namespace DiscordRPC.Core
 
             try
             {
-                // Reinitialize client if ID changed
                 if (_rpcClient == null || _rpcClient.ApplicationID != _currentProfile.ClientId)
                 {
                     _rpcClient?.Dispose();
@@ -289,6 +334,8 @@ namespace DiscordRPC.Core
             _currentProfile.Button1Url = getCleanText(txtBtn1Url);
             _currentProfile.Button2Label = getCleanText(txtBtn2Label);
             _currentProfile.Button2Url = getCleanText(txtBtn2Url);
+
+            _currentProfile.ListeningPort = getCleanText(txtListeningPort);
         }
 
         internal void BuildUI()
@@ -328,6 +375,7 @@ namespace DiscordRPC.Core
             panelStack.Children.Add(CreateFormInputRow("Application Client ID:", txtClientId = new TextBox { Text = _currentProfile.ClientId, Tag = "Snowflake ID (e.g. 1234567890123456)" }));
             panelStack.Children.Add(CreateFormInputRow("Activity Details:", txtDetails = new TextBox { Text = _currentProfile.Details, Tag = "What the user is doing (Max 128 chars)", MaxLength = 128 }));
             panelStack.Children.Add(CreateFormInputRow("Activity State:", txtState = new TextBox { Text = _currentProfile.State, Tag = "The user's current party status (Max 128 chars)", MaxLength = 128 }));
+            panelStack.Children.Add(CreateFormInputRow("Live Network Port (Overrides Other Settings):", txtListeningPort = new TextBox { Text = _currentProfile.ListeningPort, Width = 80, HorizontalAlignment = HorizontalAlignment.Left, Tag = "e.g. 9000" }));
 
             // Time Config Row
             panelStack.Children.Add(new TextBlock { Text = "TIMESTAMP METRICS", FontSize = 10, FontWeight = FontWeights.Bold, Foreground = Brushes.DimGray, Margin = new Thickness(0, 12, 0, 6) });
@@ -541,6 +589,7 @@ namespace DiscordRPC.Core
                     return;
                 }
             }
+            _portListener?.Stop();
             _rpcClient?.Dispose();
         }
     }
