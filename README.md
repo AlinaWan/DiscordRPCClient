@@ -61,8 +61,6 @@ The client is built on the [.NET 10](https://dotnet.microsoft.com/en-us/download
 }
 ```
 
-  (Dynamic port switching is not supported)
-
 </details>
 
 
