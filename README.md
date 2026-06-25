@@ -10,9 +10,11 @@
 [![Windows](https://custom-icon-badges.demolab.com/badge/For%20Windows-0078D6?logo=windows11&logoColor=white)](#)
 [![❤︎](https://img.shields.io/badge/Made%20with%20%E2%9D%A4%20by%20Riri-FFCAE9)](#)
 
-</div>
 
 A fully free, open-source, and unopinionated Discord Custom Rich Presence editor.
+
+  <img src="assets/preview.webp" alt="Preview" width="100%">
+</div>
 
 ---
 
