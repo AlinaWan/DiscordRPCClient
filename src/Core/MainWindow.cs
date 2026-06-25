@@ -174,15 +174,18 @@ namespace DiscordRPC.Core
                         {
                             // Marshall the updates cleanly back onto the WPF dispatch layout thread
                             Dispatcher.Invoke(() => {
-                                // If incoming values are blank/default, merge and preserve what's currently in the UI box instead
-                                if (string.IsNullOrEmpty(remoteProfile.Details))
-                                    remoteProfile.Details = txtDetails.Text;
-                                if (string.IsNullOrEmpty(remoteProfile.State))
-                                    remoteProfile.State = txtState.Text;
-                                if (string.IsNullOrEmpty(remoteProfile.LargeImageKey))
-                                    remoteProfile.LargeImageKey = txtLargeKey.Text;
-                                if (string.IsNullOrEmpty(remoteProfile.SmallImageKey))
-                                    remoteProfile.SmallImageKey = txtSmallKey.Text;
+                                // Helper to strip ghost/watermark values before evaluating fallback assignments
+                                Func<TextBox, string> getCleanText = (tb) => (tb.Text == tb.Tag as string) ? "" : tb.Text;
+
+                                // If incoming values are strictly null, merge in what's currently in the UI box
+                                if (remoteProfile.Details == null)
+                                    remoteProfile.Details = getCleanText(txtDetails);
+                                if (remoteProfile.State == null)
+                                    remoteProfile.State = getCleanText(txtState);
+                                if (remoteProfile.LargeImageKey == null)
+                                    remoteProfile.LargeImageKey = getCleanText(txtLargeKey);
+                                if (remoteProfile.SmallImageKey == null)
+                                    remoteProfile.SmallImageKey = getCleanText(txtSmallKey);
 
                                 // Commit the merged data model
                                 _currentProfile = remoteProfile;
