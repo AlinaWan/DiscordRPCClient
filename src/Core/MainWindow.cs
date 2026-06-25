@@ -391,25 +391,25 @@ namespace DiscordRPC.Core
             panelStack.Children.Add(CreateFormInputRow("Remaining Duration (Mins):", txtDuration = new TextBox { Text = _currentProfile.TotalDurationMinutes.ToString(), Width = 60, HorizontalAlignment = HorizontalAlignment.Left, Tag = "Integer" }));
 
             // Asset Keys Visual Settings
-            panelStack.Children.Add(new TextBlock { Text = "ASSET ASSETS IMAGES", FontSize = 10, FontWeight = FontWeights.Bold, Foreground = Brushes.DimGray, Margin = new Thickness(0, 12, 0, 6) });
+            panelStack.Children.Add(new TextBlock { Text = "ASSET IMAGES", FontSize = 10, FontWeight = FontWeights.Bold, Foreground = Brushes.DimGray, Margin = new Thickness(0, 12, 0, 6) });
             panelStack.Children.Add(CreateFormInputRow("Large Image Key String:", txtLargeKey = new TextBox { Text = _currentProfile.LargeImageKey, Tag = "asset_name_or_url (Max 32 chars)", MaxLength = 32 }));
             panelStack.Children.Add(CreateFormInputRow("Large Image Hover Text:", txtLargeText = new TextBox { Text = _currentProfile.LargeImageText, Tag = "Tooltip text on hover (Max 128 chars)", MaxLength = 128 }));
             panelStack.Children.Add(CreateFormInputRow("Small Image Key String:", txtSmallKey = new TextBox { Text = _currentProfile.SmallImageKey, Tag = "asset_name_or_url (Max 32 chars)", MaxLength = 32 }));
             panelStack.Children.Add(CreateFormInputRow("Small Image Hover Text:", txtSmallText = new TextBox { Text = _currentProfile.SmallImageText, Tag = "Tooltip text on hover (Max 128 chars)", MaxLength = 128 }));
 
             // Party Configuration
-            panelStack.Children.Add(new TextBlock { Text = "MATCHMAKING PARTY LOBBY", FontSize = 10, FontWeight = FontWeights.Bold, Foreground = Brushes.DimGray, Margin = new Thickness(0, 12, 0, 6) });
+            panelStack.Children.Add(new TextBlock { Text = "PARTY STATUS", FontSize = 10, FontWeight = FontWeights.Bold, Foreground = Brushes.DimGray, Margin = new Thickness(0, 12, 0, 6) });
             panelStack.Children.Add(CreateFormInputRow("Unique Party ID Group:", txtPartyId = new TextBox { Text = _currentProfile.PartyId, Tag = "id_string (Max 128 chars)", MaxLength = 128 }));
             panelStack.Children.Add(CreateFormInputRow("Lobby Current Slots Filled:", txtPartyCur = new TextBox { Text = _currentProfile.PartyCurrentSize.ToString(), Width = 50, HorizontalAlignment = HorizontalAlignment.Left, Tag = "Int" }));
             panelStack.Children.Add(CreateFormInputRow("Lobby Maximum Cap Slots:", txtPartyMax = new TextBox { Text = _currentProfile.PartyMaxSize.ToString(), Width = 50, HorizontalAlignment = HorizontalAlignment.Left, Tag = "Int" }));
 
             // Secrets Secure Links
-            panelStack.Children.Add(new TextBlock { Text = "RPC CLIENT SECRETS ENGINES", FontSize = 10, FontWeight = FontWeights.Bold, Foreground = Brushes.DimGray, Margin = new Thickness(0, 12, 0, 6) });
+            panelStack.Children.Add(new TextBlock { Text = "CONNECTION SECRETS", FontSize = 10, FontWeight = FontWeights.Bold, Foreground = Brushes.DimGray, Margin = new Thickness(0, 12, 0, 6) });
             panelStack.Children.Add(CreateFormInputRow("Join Application Secret:", txtJoinSecret = new TextBox { Text = _currentProfile.JoinSecret, Tag = "Secret for join connection (Max 128)", MaxLength = 128 }));
             panelStack.Children.Add(CreateFormInputRow("Spectate Profile Secret:", txtSpectateSecret = new TextBox { Text = _currentProfile.SpectateSecret, Tag = "Secret for spectate connection (Max 128)", MaxLength = 128 }));
 
             // Dual Custom Interact Buttons Parameters
-            panelStack.Children.Add(new TextBlock { Text = "CUSTOM ACTIONS BUTTONS LINKS (MAX 2)", FontSize = 10, FontWeight = FontWeights.Bold, Foreground = Brushes.DimGray, Margin = new Thickness(0, 12, 0, 6) });
+            panelStack.Children.Add(new TextBlock { Text = "BUTTON URLS (MAX 2)", FontSize = 10, FontWeight = FontWeights.Bold, Foreground = Brushes.DimGray, Margin = new Thickness(0, 12, 0, 6) });
             panelStack.Children.Add(CreateFormInputRow("Button #1 Text Label:", txtBtn1Label = new TextBox { Text = _currentProfile.Button1Label, Tag = "Button title (Max 32 chars)", MaxLength = 32 }));
             panelStack.Children.Add(CreateFormInputRow("Button #1 Target URL:", txtBtn1Url = new TextBox { Text = _currentProfile.Button1Url, Tag = "https://example.com (Max 512)", MaxLength = 512 }));
             panelStack.Children.Add(CreateFormInputRow("Button #2 Text Label:", txtBtn2Label = new TextBox { Text = _currentProfile.Button2Label, Tag = "Button title (Max 32 chars)", MaxLength = 32 }));
