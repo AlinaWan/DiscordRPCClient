@@ -14,6 +14,14 @@
 A fully free, open-source, and unopinionated Discord Custom Rich Presence editor.
 
   <img src="assets/preview.webp" alt="Preview" width="100%">
+
+  &nbsp;
+
+I got tired of all the bloated and incomplete Discord Rich Presence clients out there, so I made my own in 4 hours.
+It does everything any other client does plus UDP support, all while the source code is less than 50 KB and the compiled .exe
+and .dll are less than 200 KB combined. In fact, the largest part of the compiled application is the Windows SDK .dll at around
+24 MB, and that's still several times less than those Electron-based clients lol. #bringbackdesktopappsmadebysystemsengineersnotwebdevelopers
+
 </div>
 
 ---
