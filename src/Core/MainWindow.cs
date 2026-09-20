@@ -244,7 +244,10 @@ namespace DiscordRPC.Core
                     }
                     else
                     {
-                        presence.Timestamps = Timestamps.Now;
+                        presence.Timestamps = new Timestamps
+                        {
+                            Start = DateTime.UtcNow.AddMinutes(-_currentProfile.TotalDurationMinutes)
+                        };
                     }
                 }
 
@@ -384,11 +387,11 @@ namespace DiscordRPC.Core
             panelStack.Children.Add(new TextBlock { Text = "TIMESTAMP METRICS", FontSize = 10, FontWeight = FontWeights.Bold, Foreground = Brushes.DimGray, Margin = new Thickness(0, 12, 0, 6) });
             var timestampContainer = new StackPanel { Margin = new Thickness(0, 0, 0, 10) };
             chkUseTime = new CheckBox { Content = "Display Elapsed Activity Time", IsChecked = _currentProfile.UseTimestamps, Foreground = Brushes.LightGray, Margin = new Thickness(5, 2, 0, 4) };
-            chkAsRemaining = new CheckBox { Content = "Display Dynamic Countdown Style Remaining", IsChecked = _currentProfile.AsTimeRemaining, Foreground = Brushes.LightGray, Margin = new Thickness(5, 2, 0, 4) };
+            chkAsRemaining = new CheckBox { Content = "Display Countdown Remaining", IsChecked = _currentProfile.AsTimeRemaining, Foreground = Brushes.LightGray, Margin = new Thickness(5, 2, 0, 4) };
             timestampContainer.Children.Add(chkUseTime);
             timestampContainer.Children.Add(chkAsRemaining);
             panelStack.Children.Add(timestampContainer);
-            panelStack.Children.Add(CreateFormInputRow("Remaining Duration (Mins):", txtDuration = new TextBox { Text = _currentProfile.TotalDurationMinutes.ToString(), Width = 60, HorizontalAlignment = HorizontalAlignment.Left, Tag = "Integer" }));
+            panelStack.Children.Add(CreateFormInputRow("Elapsed/Remaining Duration (Mins):", txtDuration = new TextBox { Text = _currentProfile.TotalDurationMinutes.ToString(), Width = 60, HorizontalAlignment = HorizontalAlignment.Left, Tag = "Integer" }));
 
             // Asset Keys Visual Settings
             panelStack.Children.Add(new TextBlock { Text = "ASSET IMAGES", FontSize = 10, FontWeight = FontWeights.Bold, Foreground = Brushes.DimGray, Margin = new Thickness(0, 12, 0, 6) });
